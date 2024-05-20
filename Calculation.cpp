@@ -416,11 +416,57 @@ Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, f
 }
 
 // クロス積
-Vector3 Cross(const Vector3 & v1, const Vector3 & v2) {
+Vector3 Cross(const Vector3& v1, const Vector3& v2) {
 	Vector3 result;
-	result.x= v1.y * v2.z - v1.z * v2.y;
+	result.x = v1.y * v2.z - v1.z * v2.y;
 	result.y = (v1.z * v2.x) - (v1.x * v2.z);
 	result.z = v1.x * v2.y - v1.y * v2.x;
-
 	return result;
+}
+
+void DrawGrid(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewPortMatrix) {
+	const float kGridHalfWidth = 2.0f;
+	const uint32_t kSubdvision = 10;
+	const float kGridEvery = (kGridHalfWidth * 2.0f) / float(kSubdvision);
+
+	for (uint32_t xIndex = 0; xIndex <= kSubdvision;++xIndex) {
+		float x = -kGridHalfWidth + (xIndex * kGridEvery);
+		unsigned int color = 0xAAAAAAFF;
+
+		Vector3 start{ x,0.0f,-kGridHalfWidth };
+		Vector3 end{ x,0.0f,kGridHalfWidth };
+
+		Vector3 startScreen = TransForm(TransForm(start, viewProjectionMatrix), viewPortMatrix);
+		Vector3 endScreen = TransForm(TransForm(end, viewProjectionMatrix), viewPortMatrix);
+
+		if (x == 0.0f) {
+			color = BLACK;
+		}
+
+		Novice::DrawLine(int(startScreen.x), int(startScreen.y), int(endScreen.x), int(endScreen.y), color);
+	}
+
+	//左から右も同じように引く
+	for (uint32_t zIndex = 0; zIndex <= kSubdvision;++zIndex) {
+		float z = -kGridHalfWidth + (zIndex * kGridEvery);
+		unsigned int color = 0xAAAAAAFF;
+
+		Vector3 start{ z,0.0f,-kGridHalfWidth };
+		Vector3 end{ z,0.0f,kGridHalfWidth };
+
+		Vector3 startScreen = TransForm(TransForm(start, viewProjectionMatrix), viewPortMatrix);
+		Vector3 endScreen = TransForm(TransForm(end, viewProjectionMatrix), viewPortMatrix);
+
+		if (z == 0.0f) {
+			color = BLACK;
+		}
+
+		Novice::DrawLine(int(startScreen.x), int(startScreen.y), int(endScreen.x), int(endScreen.y), color);
+	}
+
+	void DrawSphere(const Sphere& sphere, const Matrix4x4& viewProjectionMatrix, Matrix4x4& viewportMatrix, uint32_t color) {
+		const uint32_t kSubdvision = 16;
+		const float kLonEvery = 2.0f * float(M_PI) / kSubdvision;
+		const float kLatEvery = 2.0f * float(M_PI) / kSubdvision;
+	}
 }

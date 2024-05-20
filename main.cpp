@@ -12,6 +12,8 @@ const int kColmunHeight = 50;
 const int kWindowWidth = 1280;
 const int kWindowHeight = 720;
 
+
+
 void VectorScreenPrintf(int x, int y, const Vector3& v, const char* label) {
 	Novice::ScreenPrintf(x, y, "%.02f", v.x);
 	Novice::ScreenPrintf(x + kColmunWidth, y, "%.02f", v.y);

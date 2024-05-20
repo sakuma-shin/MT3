@@ -1,9 +1,14 @@
 ﻿#pragma once
 #include <Novice.h>
 #define _USE_MATH_DEFINES
-#include <math.h>
+#include <cmath>
 #include"Vector3.h"
 #include"Matrix4x4.h"
+
+struct Sphere {
+	Vector3 center;
+	float radius;
+};
 
 //加算
 Vector3 Add(const Vector3& v1, const Vector3& v2);
