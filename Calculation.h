@@ -85,3 +85,5 @@ Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, f
 
 //クロス積
 Vector3 Cross(const Vector3& v1, const Vector3& v2);
+
+void DrawSphere(const Sphere& sphere, const Matrix4x4& viewProjectionMatrix, Matrix4x4& viewportMatrix, uint32_t color);

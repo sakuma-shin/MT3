@@ -464,9 +464,37 @@ void DrawGrid(const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewPortMa
 		Novice::DrawLine(int(startScreen.x), int(startScreen.y), int(endScreen.x), int(endScreen.y), color);
 	}
 
-	void DrawSphere(const Sphere& sphere, const Matrix4x4& viewProjectionMatrix, Matrix4x4& viewportMatrix, uint32_t color) {
-		const uint32_t kSubdvision = 16;
-		const float kLonEvery = 2.0f * float(M_PI) / kSubdvision;
-		const float kLatEvery = 2.0f * float(M_PI) / kSubdvision;
+	void DrawSphere(const Sphere& sphere, const Matrix4x4& viewProjectionMatrix, Matrix4x4& viewportMatrix, uint32_t color){
+		float pi = float(M_PI);
+		const uint32_t kSubdvision = 16;			//分割数
+		const float kLonEvery = 2.0f * pi / kSubdvision;	//経度分割一つ分の角度
+		const float kLatEvery = 2.0f * pi / kSubdvision;	//緯度分割一つ分の角度
+
+		for (uint32_t latIndex = 0;latIndex < kSubdvision;++latIndex) {
+			float lat = -pi / 2.0f + kLatEvery * latIndex;
+			//経度の方に分割0~2π
+			for (uint32_t lonIndex = 0;lonIndex < kSubdvision;++lonIndex) {
+				float lon = lonIndex * kLonEvery;//現在の経度
+				Vector3 a = {
+					sphere.radius * (cosf(lon) * cosf(lat))+sphere.center.x,//x
+					sphere.radius * (sinf(lat)) + sphere.center.y,		//y
+					sphere.radius* sphere(cosf(lon) * sinf(lat)) + sphere.center.z//z
+				};
+
+				Vector3 b = {
+					sphere.radius * cosf(lat + kLatEvery) * cosf(lon) + sphere.center.x,
+					sphere.radius * sinf(lat,kLatEvery) + center.y,
+					sphere.radius * cosf(lat + kLatEvery) * sin(lon) + sphere.center.z;
+				}
+
+					Vector3 c = {
+						sphere.radius * cosf(lat) * cosf(lon + kLonEvery) + sphere.center.x,
+						sphere.radius*sin(lat)+sphere.center.y,
+
+				}
+				//a,b,c,をスクリーン座標に変換
+			}
+		}
+
 	}
 }
